@@ -1,10 +1,22 @@
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Arrastrar : MonoBehaviour
 {
+    [SerializeField] private LayerMask mesaLayer; 
+    [SerializeField] private AnimationCurve movimientoCurve;
+    [SerializeField] private float tiempoAnimacion = 0.5f;
+
+    private Action callback;
     private bool isDragging;
-    private Vector3 offset;
+    private Vector3 offset, posicionInicial;
     private Camera camara;
+
+
+    const string CASILLA_ID = "Casilla";
+
+    public Action Callback { get => callback; set => callback = value; }
 
     private void Start()
     {
@@ -13,14 +25,31 @@ public class Arrastrar : MonoBehaviour
 
     private void OnMouseUp()
     {
-        // Termina el arrastre
         isDragging = false;
+
+        // Detecta si se soltó en una posición válida
+        Collider2D hitCollider = Physics2D.OverlapPoint(transform.position, mesaLayer);
+
+        if (hitCollider != null && hitCollider.CompareTag(CASILLA_ID))
+        {
+            // Si está en una posición válida, animar hacia el destino
+            AnimMover(hitCollider.transform.position);
+
+            // Avisa de que ya está movido
+            Callback?.Invoke();
+            return;
+        }
+
+        // Si no está en una posición válida, regresar a la posición inicial con animación
+        AnimMover(posicionInicial);
     }
 
     private void OnMouseDown()
     {
         // Inicia el arrastre
         isDragging = true;
+        posicionInicial = transform.position;
+
         // Calcula el offset entre el objeto y el cursor
         offset = transform.position - Mover();
     }
@@ -39,5 +68,26 @@ public class Arrastrar : MonoBehaviour
         Vector3 mousePos = camara.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0; 
         return mousePos;
+    }
+
+    private async void AnimMover(Vector3 destino)
+    {
+        float tiempoTranscurrido = 0;
+        Vector3 posicionInicial = transform.position;
+
+        while (tiempoTranscurrido < tiempoAnimacion)
+        {
+            tiempoTranscurrido += Time.deltaTime;
+            float t = tiempoTranscurrido / tiempoAnimacion;
+
+            // Aplicar la curva de animación
+            float curvaT = movimientoCurve.Evaluate(t);
+            transform.position = Vector3.Lerp(posicionInicial, destino, curvaT);
+
+            await Task.Yield(); 
+        }
+
+        // Asegurarse de que termina en la posición exacta
+        transform.position = destino;
     }
 }
