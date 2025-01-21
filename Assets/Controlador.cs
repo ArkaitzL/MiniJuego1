@@ -5,7 +5,11 @@ using UnityEngine;
 public class Controlador : MonoBehaviour
 {
 
-    [SerializeField] private Generador generador = new Generador();
+    [SerializeField] private Generador generadorSP = new Generador();
+    [SerializeField] private Tablero tableroSP = new Tablero();
+    [SerializeField] private Buscar buscar = new Buscar();
+
+    private Dictionary<float, Dictionary<float, Dado>> tablero;
 
     private ObservableHashSet<Dado> dadosL = new ObservableHashSet<Dado>();
     private ObservableHashSet<Dado> dadosR = new ObservableHashSet<Dado>();
@@ -19,15 +23,16 @@ public class Controlador : MonoBehaviour
 
         // Genera el escenario
         Generar();
+        Tablero();
     }
 
-    // Genera el escenario
+    // Genera los cajones
     private async void Generar() 
     {
         // Cajones
         var tareas = new[] {
-            generador.IniciarDados(1),
-            generador.IniciarDados(-1)
+            generadorSP.IniciarDados(1),
+            generadorSP.IniciarDados(-1)
         };
 
         var resultados = await Task.WhenAll(tareas);
@@ -37,8 +42,15 @@ public class Controlador : MonoBehaviour
         dadosR.New(resultados[1]);
     }
 
+    // Generar el tablero
+    private void Tablero() 
+    {
+        // Tablero
+        tablero = tableroSP.Generar();
+    }
+
     // Detectar nuevo elemento en la lista
-    private void OnAdd(Dado dado) 
+    private void OnAdd(Dado dado, ObservableHashSet<Dado> lista) 
     {
         Arrastrar arrastrar = dado.transform.GetComponent<Arrastrar>();
         if (arrastrar == null) return;
@@ -50,19 +62,48 @@ public class Controlador : MonoBehaviour
 
             usando = new Usado(
                 dado,
-                arrastrar
+                arrastrar,
+                lista
             );
         };
+    }
+
+    // Jugar Turno
+    public void Turno() 
+    {
+        if (usando == null) return;
+
+        // Fijarlo al tablero
+        usando.arrastrar.Arrastrable = false;
+        // Cambiarlo de lista
+        usando.lista.Remove(usando.dado);
+        Vector3 p = usando.dado.transform.position;
+        tablero[p.x][p.y] = usando.dado;
+
+        usando = null;
+
+        // Buscar sumas
+        buscar.Inicializar(tablero);
+        List<Dado> dados = buscar.ComprobarSuma(new Vector2(p.x, p.y));
+        Debug.Log(dados.Count);
+
+        // Crear nuevo dado en la lista
+        // ...
+
+        // Pasar turno
+        // ...
     }
 
     public class Usado {
         public Dado dado;
         public Arrastrar arrastrar;
+        public ObservableHashSet<Dado> lista;
 
-        public Usado(Dado dado, Arrastrar arrastrar)
+        public Usado(Dado dado, Arrastrar arrastrar, ObservableHashSet<Dado> lista)
         {
             this.dado = dado;
             this.arrastrar = arrastrar;
+            this.lista = lista;
         }
     }
 }

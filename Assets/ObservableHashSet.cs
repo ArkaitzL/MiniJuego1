@@ -6,9 +6,9 @@ public class ObservableHashSet<T>
 {
     private HashSet<T> hashSet = new HashSet<T>();
 
-    // Eventos para añadir y eliminar
-    public event Action<T> OnElementAdded;
-    public event Action<T> OnElementRemoved;
+    // Eventos para añadir y eliminar, con referencia al conjunto
+    public event Action<T, ObservableHashSet<T>> OnElementAdded;
+    public event Action<T, ObservableHashSet<T>> OnElementRemoved;
 
     // Constructor vacío
     public ObservableHashSet() { }
@@ -19,12 +19,12 @@ public class ObservableHashSet<T>
         New(coleccionInicial);
     }
 
-    public void New(IEnumerable<T> coleccionInicial) 
+    public void New(IEnumerable<T> coleccionInicial)
     {
         foreach (var item in coleccionInicial)
         {
-            hashSet.Add(item); 
-            OnElementAdded?.Invoke(item); 
+            hashSet.Add(item);
+            OnElementAdded?.Invoke(item, this); // Incluir referencia al conjunto
         }
     }
 
@@ -33,7 +33,7 @@ public class ObservableHashSet<T>
         bool added = hashSet.Add(item);
         if (added)
         {
-            OnElementAdded?.Invoke(item); // Disparar el evento al añadir
+            OnElementAdded?.Invoke(item, this); // Incluir referencia al conjunto
         }
         return added;
     }
@@ -43,7 +43,7 @@ public class ObservableHashSet<T>
         bool removed = hashSet.Remove(item);
         if (removed)
         {
-            OnElementRemoved?.Invoke(item); // Disparar el evento al eliminar
+            OnElementRemoved?.Invoke(item, this); // Incluir referencia al conjunto
         }
         return removed;
     }
@@ -52,7 +52,7 @@ public class ObservableHashSet<T>
     {
         foreach (var item in hashSet)
         {
-            OnElementRemoved?.Invoke(item); // Disparar el evento por cada elemento eliminado
+            OnElementRemoved?.Invoke(item, this); // Incluir referencia al conjunto
         }
         hashSet.Clear();
     }

@@ -8,14 +8,14 @@ public class Arrastrar : MonoBehaviour
     [SerializeField] private AnimationCurve movimientoCurve;
     [SerializeField] private float tiempoAnimacion = 0.5f;
 
+    private bool arrastrable = true;
     private Action callback;
     private bool isDragging;
     private Vector3 offset, posicionInicial;
     private Camera camara;
 
 
-    const string CASILLA_ID = "Casilla";
-
+    public bool Arrastrable { get => arrastrable; set => arrastrable = value; }
     public Action Callback { get => callback; set => callback = value; }
 
     private void Start()
@@ -25,12 +25,14 @@ public class Arrastrar : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (!arrastrable) return;
+
         isDragging = false;
 
         // Detecta si se soltó en una posición válida
         Collider2D hitCollider = Physics2D.OverlapPoint(transform.position, mesaLayer);
 
-        if (hitCollider != null && hitCollider.CompareTag(CASILLA_ID))
+        if (hitCollider != null && hitCollider.CompareTag(IDs.CASILLA_ID))
         {
             // Si está en una posición válida, animar hacia el destino
             AnimMover(hitCollider.transform.position);
@@ -46,6 +48,8 @@ public class Arrastrar : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (!arrastrable) return;
+
         // Inicia el arrastre
         isDragging = true;
         posicionInicial = transform.position;

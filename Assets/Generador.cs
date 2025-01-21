@@ -24,7 +24,7 @@ using System.Threading.Tasks;
         }
 
         // Crear el padre y posición inicial
-        GameObject padre = new GameObject($"Jugador-{lado}");
+        GameObject padre = new GameObject($"Jugador [{lado}]");
         Vector2 posicionInicial = dadosPosicion * (lado);
 
         // Almacenar los dados generados
@@ -39,7 +39,8 @@ using System.Threading.Tasks;
             );
 
             // Crear el dado asincrónicamente
-            Dado nuevoDado = await CrearDado(posicionDado, $"Dado-{i}", padre.transform);
+            bool jugador = lado == 1;
+            Dado nuevoDado = await CrearDado(posicionDado, $"Dado-{i}", padre.transform, jugador);
 
             // Añadir el dado al conjunto
             dadosSet.Add(nuevoDado);
@@ -51,7 +52,7 @@ using System.Threading.Tasks;
         return dadosSet;
     }
 
-    public async Task<Dado> CrearDado(Vector2 posicion, string nombre, Transform parent)
+    public async Task<Dado> CrearDado(Vector2 posicion, string nombre, Transform parent, bool jugador)
     {
         // Instanciar el GameObject del dado
         GameObject dadoGO = GameObject.Instantiate(dado2D);
@@ -68,6 +69,10 @@ using System.Threading.Tasks;
 
         // Pintar el dado
         dadoGO.GetComponent<UIDado>().Pintar(datos);
+
+        // Permitir arrastrar o no
+        dadoGO.GetComponent<Arrastrar>().Arrastrable = jugador;
+
 
         // Animacion
         // await ....
