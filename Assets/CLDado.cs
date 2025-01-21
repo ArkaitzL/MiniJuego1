@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // DADO: Todo lo que compoen el dado
@@ -6,6 +7,19 @@ public class Dado
     public Transform transform;
     public int puntuacion;
     public PaloValor palo;
+
+    public override bool Equals(object obj)
+    {
+        return obj is Dado dado &&
+               EqualityComparer<Transform>.Default.Equals(transform, dado.transform) &&
+               puntuacion == dado.puntuacion &&
+               EqualityComparer<PaloValor>.Default.Equals(palo, dado.palo);
+    }
+
+    public override int GetHashCode()
+    {
+        return System.HashCode.Combine(transform, puntuacion, palo);
+    }
 }
 
 //PALO: El palo del dado

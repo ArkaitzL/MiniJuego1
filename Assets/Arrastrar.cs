@@ -41,7 +41,7 @@ public class Arrastrar : MonoBehaviour
         }
 
         // Si no está en una posición válida, regresar a la posición inicial con animación
-        AnimMover(posicionInicial);
+        PosicionInicial();
     }
 
     private void OnMouseDown()
@@ -68,6 +68,10 @@ public class Arrastrar : MonoBehaviour
         Vector3 mousePos = camara.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0; 
         return mousePos;
+    }
+
+    public void PosicionInicial() {
+        AnimMover(posicionInicial);
     }
 
     private async void AnimMover(Vector3 destino)
