@@ -85,7 +85,7 @@ public class Controlador : MonoBehaviour
         // Buscar sumas
         buscar.Inicializar(tablero);
         List<Dado> dados = buscar.ComprobarSuma(new Vector2(p.x, p.y));
-        Debug.Log(dados.Count);
+        Debug.Log("DADOS: " + dados.Count);
 
         // Crear nuevo dado en la lista
         // ...

@@ -52,6 +52,24 @@ using System;
         float xActual = posicionInicial.x;
         float yActual = posicionInicial.y;
 
+        // Incluir el dado en la posición inicial
+        if (tablero.ContainsKey(xActual) && tablero[xActual].ContainsKey(yActual))
+        {
+            Dado dadoInicial = tablero[xActual][yActual];
+            if (dadoInicial != null)
+            {
+                temporal.Add(dadoInicial);
+                sumaActual += dadoInicial.puntuacion;
+
+                if (sumaActual == sumar)
+                {
+                    resultado.AddRange(temporal);
+                    return resultado; // Retornar inmediatamente si ya se alcanza la suma
+                }
+            }
+        }
+
+        // Continuar buscando en la dirección indicada
         while (true)
         {
             // Mover en la dirección indicada
@@ -88,6 +106,7 @@ using System;
 
         return resultado;
     }
+
 
     // Obtiene el siguiente índice en una lista ordenada, considerando la dirección
     private float ObtenerSiguienteIndice(List<float> indices, float valorActual, int direccion)
