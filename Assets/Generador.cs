@@ -63,6 +63,7 @@ using System.Threading.Tasks;
         // Crear los datos del dado
         Dado datos = new Dado  {
             puntuacion = Random.Range(1, NUM_MAX_DADO + 1),
+            posicionInicial = dadoGO.transform.position,
             palo = Palo.RandomValue(),
             transform = dadoGO.transform
         };

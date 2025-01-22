@@ -32,13 +32,9 @@ using System;
 
         // Buscar en las 4 direcciones principales y las diagonales
         resultado.AddRange(BuscarEnDireccion(posicionInicial, 1, 0));  // Horizontal derecha
-        resultado.AddRange(BuscarEnDireccion(posicionInicial, -1, 0)); // Horizontal izquierda
         resultado.AddRange(BuscarEnDireccion(posicionInicial, 0, 1));  // Vertical arriba
-        resultado.AddRange(BuscarEnDireccion(posicionInicial, 0, -1)); // Vertical abajo
         resultado.AddRange(BuscarEnDireccion(posicionInicial, 1, 1));  // Diagonal ↘
-        resultado.AddRange(BuscarEnDireccion(posicionInicial, -1, -1)); // Diagonal ↖
         resultado.AddRange(BuscarEnDireccion(posicionInicial, 1, -1)); // Diagonal ↗
-        resultado.AddRange(BuscarEnDireccion(posicionInicial, -1, 1)); // Diagonal ↙
 
         return resultado;
     }
@@ -47,10 +43,15 @@ using System;
     {
         List<Dado> resultado = new List<Dado>();
         List<Dado> temporal = new List<Dado>();
+
         int sumaActual = 0;
 
         float xActual = posicionInicial.x;
         float yActual = posicionInicial.y;
+
+        // Lista para almacenar resultados en ambas direcciones
+        List<Dado> direccionPositiva = new List<Dado>();
+        List<Dado> direccionNegativa = new List<Dado>();
 
         // Incluir el dado en la posición inicial
         if (tablero.ContainsKey(xActual) && tablero[xActual].ContainsKey(yActual))
@@ -69,7 +70,34 @@ using System;
             }
         }
 
-        // Continuar buscando en la dirección indicada
+        // Buscar en dirección positiva
+        BuscarEnUnaDireccion(posicionInicial, dirX, dirY, direccionPositiva);
+
+        // Buscar en dirección negativa
+        BuscarEnUnaDireccion(posicionInicial, -dirX, -dirY, direccionNegativa);
+
+        // Combinar los resultados en ambas direcciones
+        temporal.AddRange(direccionPositiva);
+        temporal.AddRange(direccionNegativa);
+
+        // Calcular la suma total
+        sumaActual = temporal.Sum(dado => dado.puntuacion);
+        //Debug.Log("SUMA = " + sumaActual);
+
+        if (sumaActual == sumar)
+        {
+            resultado.AddRange(temporal);
+        }
+
+        return resultado;
+    }
+
+    private void BuscarEnUnaDireccion(Vector2 posicionInicial, int dirX, int dirY, List<Dado> acumulador)
+    {
+        float xActual = posicionInicial.x;
+        float yActual = posicionInicial.y;
+        int sumaParcial = 0;
+
         while (true)
         {
             // Mover en la dirección indicada
@@ -88,23 +116,15 @@ using System;
                 break; // Interrumpir si no hay dado en la posición
             }
 
-            if (sumaActual + dadoActual.puntuacion > sumar)
+            if (sumaParcial + dadoActual.puntuacion > sumar)
             {
                 break; // Interrumpir si la suma excede el objetivo
             }
 
-            // Añadir el dado a la lista temporal y actualizar la suma
-            temporal.Add(dadoActual);
-            sumaActual += dadoActual.puntuacion;
-
-            if (sumaActual == sumar)
-            {
-                resultado.AddRange(temporal);
-                break; // Terminar la búsqueda si se logra la suma exacta
-            }
+            // Añadir el dado a la lista acumuladora
+            acumulador.Add(dadoActual);
+            sumaParcial += dadoActual.puntuacion;
         }
-
-        return resultado;
     }
 
 

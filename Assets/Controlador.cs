@@ -69,29 +69,49 @@ public class Controlador : MonoBehaviour
     }
 
     // Jugar Turno
-    public void Turno() 
+    public async void Turno() 
     {
         if (usando == null) return;
 
-        // Fijarlo al tablero
-        usando.arrastrar.Arrastrable = false;
         // Cambiarlo de lista
         usando.lista.Remove(usando.dado);
         Vector3 p = usando.dado.transform.position;
         tablero[p.x][p.y] = usando.dado;
-
-        usando = null;
 
         // Buscar sumas
         buscar.Inicializar(tablero);
         List<Dado> dados = buscar.ComprobarSuma(new Vector2(p.x, p.y));
         Debug.Log("DADOS: " + dados.Count);
 
+        if (dados.Count > 0)
+        {
+            // ATACAR.CS
+
+            // Quitar dado del tablero
+            // ...
+
+            // Atacar
+            // ...
+        }
+
         // Crear nuevo dado en la lista
-        // ...
+        Transform dadoTR = usando.dado.transform;
+        bool arrastrable = usando.arrastrar.Arrastrable;
+        Dado dado = await generadorSP.CrearDado(
+            usando.dado.posicionInicial,
+            dadoTR.name,
+            dadoTR.parent,
+            arrastrable
+         );
+        usando.lista.Add(dado);
+
+        // Fijarlo al tablero
+        usando.arrastrar.Arrastrable = false;
 
         // Pasar turno
         // ...
+
+        usando = null;
     }
 
     public class Usado {

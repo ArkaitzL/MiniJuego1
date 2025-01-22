@@ -5,6 +5,7 @@ using UnityEngine;
 public class Dado 
 {
     public Transform transform;
+    public Vector2 posicionInicial;
     public int puntuacion;
     public PaloValor palo;
 
@@ -12,13 +13,14 @@ public class Dado
     {
         return obj is Dado dado &&
                EqualityComparer<Transform>.Default.Equals(transform, dado.transform) &&
+               posicionInicial.Equals(dado.posicionInicial) &&
                puntuacion == dado.puntuacion &&
                EqualityComparer<PaloValor>.Default.Equals(palo, dado.palo);
     }
 
     public override int GetHashCode()
     {
-        return System.HashCode.Combine(transform, puntuacion, palo);
+        return System.HashCode.Combine(transform, posicionInicial, puntuacion, palo);
     }
 }
 
