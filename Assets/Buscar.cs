@@ -3,7 +3,8 @@ using System.Linq;
 using UnityEngine;
 using System;
 
-[Serializable] public class Buscar
+[Serializable]
+public class Buscar
 {
     [SerializeField] private int sumar = 10; // Valor objetivo de la suma
 
@@ -36,7 +37,7 @@ using System;
         resultado.AddRange(BuscarEnDireccion(posicionInicial, 1, 1));  // Diagonal ↘
         resultado.AddRange(BuscarEnDireccion(posicionInicial, 1, -1)); // Diagonal ↗
 
-        return resultado;
+        return resultado.Distinct().ToList(); // Eliminar duplicados si los hay
     }
 
     private List<Dado> BuscarEnDireccion(Vector2 posicionInicial, int dirX, int dirY)
@@ -44,59 +45,58 @@ using System;
         List<Dado> resultado = new List<Dado>();
         List<Dado> temporal = new List<Dado>();
 
-        int sumaActual = 0;
-
         float xActual = posicionInicial.x;
         float yActual = posicionInicial.y;
 
-        // Lista para almacenar resultados en ambas direcciones
-        List<Dado> direccionPositiva = new List<Dado>();
-        List<Dado> direccionNegativa = new List<Dado>();
+        // Buscar dados en ambas direcciones
+        List<Dado> direccionPositiva = BuscarEnUnaDireccion(posicionInicial, dirX, dirY);
+        List<Dado> direccionNegativa = BuscarEnUnaDireccion(posicionInicial, -dirX, -dirY);
 
-        // Incluir el dado en la posición inicial
-        if (tablero.ContainsKey(xActual) && tablero[xActual].ContainsKey(yActual))
+        // Combinar los resultados de ambas direcciones
+        temporal.AddRange(direccionNegativa);
+        temporal.Add(GetDadoEnPosicion(posicionInicial)); // Incluir el dado en la posición inicial
+        temporal.AddRange(direccionPositiva);
+
+        // Filtrar combinaciones válidas
+        for (int i = 0; i < temporal.Count; i++)
         {
-            Dado dadoInicial = tablero[xActual][yActual];
-            if (dadoInicial != null)
-            {
-                temporal.Add(dadoInicial);
-                sumaActual += dadoInicial.puntuacion;
+            int sumaParcial = 0;
+            List<Dado> combinacion = new List<Dado>();
 
-                if (sumaActual == sumar)
+            for (int j = i; j < temporal.Count; j++)
+            {
+                Dado dadoActual = temporal[j];
+
+                if (dadoActual == null)
                 {
-                    resultado.AddRange(temporal);
-                    return resultado; // Retornar inmediatamente si ya se alcanza la suma
+                    break; // Interrumpir si no hay dado (conexión rota)
+                }
+
+                sumaParcial += dadoActual.puntuacion;
+                combinacion.Add(dadoActual);
+
+                if (sumaParcial == sumar && combinacion.Contains(GetDadoEnPosicion(posicionInicial)))
+                {
+                    resultado.AddRange(combinacion);
+                    break; // Termina la búsqueda para esta combinación
+                }
+
+                if (sumaParcial > sumar)
+                {
+                    break; // Deja de sumar si la suma parcial excede el valor objetivo
                 }
             }
-        }
-
-        // Buscar en dirección positiva
-        BuscarEnUnaDireccion(posicionInicial, dirX, dirY, direccionPositiva);
-
-        // Buscar en dirección negativa
-        BuscarEnUnaDireccion(posicionInicial, -dirX, -dirY, direccionNegativa);
-
-        // Combinar los resultados en ambas direcciones
-        temporal.AddRange(direccionPositiva);
-        temporal.AddRange(direccionNegativa);
-
-        // Calcular la suma total
-        sumaActual = temporal.Sum(dado => dado.puntuacion);
-        //Debug.Log("SUMA = " + sumaActual);
-
-        if (sumaActual == sumar)
-        {
-            resultado.AddRange(temporal);
         }
 
         return resultado;
     }
 
-    private void BuscarEnUnaDireccion(Vector2 posicionInicial, int dirX, int dirY, List<Dado> acumulador)
+    private List<Dado> BuscarEnUnaDireccion(Vector2 posicionInicial, int dirX, int dirY)
     {
+        List<Dado> acumulador = new List<Dado>();
+
         float xActual = posicionInicial.x;
         float yActual = posicionInicial.y;
-        int sumaParcial = 0;
 
         while (true)
         {
@@ -113,20 +113,27 @@ using System;
             Dado dadoActual = tablero[xActual][yActual];
             if (dadoActual == null)
             {
-                break; // Interrumpir si no hay dado en la posición
+                break; // Interrumpir si no hay dado (conexión rota)
             }
 
-            if (sumaParcial + dadoActual.puntuacion > sumar)
-            {
-                break; // Interrumpir si la suma excede el objetivo
-            }
-
-            // Añadir el dado a la lista acumuladora
             acumulador.Add(dadoActual);
-            sumaParcial += dadoActual.puntuacion;
         }
+
+        return acumulador;
     }
 
+    private Dado GetDadoEnPosicion(Vector2 posicion)
+    {
+        float x = posicion.x;
+        float y = posicion.y;
+
+        if (tablero.ContainsKey(x) && tablero[x].ContainsKey(y))
+        {
+            return tablero[x][y];
+        }
+
+        return null;
+    }
 
     // Obtiene el siguiente índice en una lista ordenada, considerando la dirección
     private float ObtenerSiguienteIndice(List<float> indices, float valorActual, int direccion)

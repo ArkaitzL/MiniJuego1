@@ -1539,6 +1539,8 @@ MonoBehaviour:
     dadosGap: 0.5
     generacionEspera: 0.5
     dado2D: {fileID: 4028126683929696135, guid: d75626f892fbc8a448797da57f03c1ab, type: 3}
+  buscar:
+    sumar: 12
 --- !u!1 &919028142
 GameObject:
   m_ObjectHideFlags: 0
