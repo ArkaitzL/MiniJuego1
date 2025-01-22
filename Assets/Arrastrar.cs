@@ -9,6 +9,7 @@ public class Arrastrar : MonoBehaviour
     [SerializeField] private float tiempoAnimacion = 0.5f;
 
     private bool arrastrable = true;
+    private bool iniciado = false;
     private Action callback;
     private bool isDragging;
     private Vector3 offset, posicionInicial;
@@ -17,6 +18,7 @@ public class Arrastrar : MonoBehaviour
 
     public bool Arrastrable { get => arrastrable; set => arrastrable = value; }
     public Action Callback { get => callback; set => callback = value; }
+    public bool Iniciado { get => iniciado; set => iniciado = value; }
 
     private void Start()
     {
@@ -25,7 +27,7 @@ public class Arrastrar : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (!arrastrable) return;
+        if (!arrastrable || !iniciado) return;
 
         isDragging = false;
 
@@ -48,7 +50,7 @@ public class Arrastrar : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!arrastrable) return;
+        if (!arrastrable || !iniciado) return;
 
         // Inicia el arrastre
         isDragging = true;
@@ -60,6 +62,7 @@ public class Arrastrar : MonoBehaviour
 
     private void OnMouseDrag()
     {
+        if (!arrastrable || !iniciado) return;
         if (!isDragging) return;
 
         // Actualiza la posición del objeto al seguir el cursor

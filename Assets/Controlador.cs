@@ -66,6 +66,8 @@ public class Controlador : MonoBehaviour
                 lista
             );
         };
+
+        arrastrar.Iniciado = true;
     }
 
     // Jugar Turno
