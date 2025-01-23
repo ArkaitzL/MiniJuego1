@@ -32,7 +32,7 @@ using TMPro;
     public void ActivarIA() 
     {
         // AQUI LA iA HACE SU MAGIA
-        Debug.Log("IA...");
+        iaSP.Nivel1();
         Controlador.instancia.turnoSP.Pasar();
     }
 

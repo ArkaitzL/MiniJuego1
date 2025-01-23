@@ -18,6 +18,8 @@ public class Controlador : MonoBehaviour
 
     public static Controlador instancia;
 
+    public Dictionary<float, Dictionary<float, Dado>> Tablero { get => tablero; set => tablero = value; }
+
     private void Awake()
     {
         // Crea una instancia publica y unica paar que sea accesible desde cualquier lado
@@ -37,7 +39,7 @@ public class Controlador : MonoBehaviour
 
         // Genera el escenario
         Generar();
-        Tablero();
+        TableroG();
 
         // Inicia el juego
         turnoSP.Iniciar();
@@ -60,7 +62,7 @@ public class Controlador : MonoBehaviour
     }
 
     // Generar el tablero
-    private void Tablero() 
+    private void TableroG() 
     {
         // Tablero
         tablero = tableroSP.Generar();
