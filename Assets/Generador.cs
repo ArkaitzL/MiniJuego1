@@ -60,11 +60,16 @@ using System.Threading.Tasks;
         dadoGO.transform.SetParent(parent);
         dadoGO.name = nombre;
 
+        // Elegir un palo random
+        Array valores = Enum.GetValues(typeof(Palo));
+        int indice = Random.Range(0, valores.Length);
+        Palo palo = (Palo)valores.GetValue(indice);
+
         // Crear los datos del dado
         Dado datos = new Dado  {
             puntuacion = Random.Range(1, NUM_MAX_DADO + 1),
             posicionInicial = dadoGO.transform.position,
-            palo = Palo.RandomValue(),
+            palo = palo,
             transform = dadoGO.transform
         };
 

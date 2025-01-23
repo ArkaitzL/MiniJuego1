@@ -1,16 +1,25 @@
 using UnityEngine;
+using System;
 
-public class CLPersonaje : MonoBehaviour
+[Serializable] public class CLPersonaje
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private bool local;
+    [SerializeField] private bool ia;
+
+    private IA iaSP = new IA();
+
+    public bool Local { get => local; set => local = value; }
+    public bool Ia { get => ia; set => ia = value; }
+
+    public void ActivarIA() 
     {
-        
+        // AQUI LA iA HACE SU MAGIA
+        Debug.Log("IA...");
+        Controlador.instancia.turnoSP.Pasar();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void Accion(Dado dado) { 
+    
     }
+
 }

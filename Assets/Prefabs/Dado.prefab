@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c06fa35803b8db143857e7db8fb24d6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puntos:
+  puntosRend:
   - {fileID: 3127566888916137166}
   - {fileID: 2178854250053343094}
   - {fileID: 1020391499719612547}
@@ -372,11 +372,10 @@ MonoBehaviour:
   - {fileID: 316865196760823639}
   - {fileID: 6253852225917639882}
   - {fileID: 5512940381167289779}
-  palosSP:
-  - {fileID: 21300000, guid: 8a41b21179900044b91399e4dda19e4a, type: 3}
-  - {fileID: 21300000, guid: b81164482f12af340bffbf25b9d9eb22, type: 3}
-  - {fileID: 21300000, guid: c8c9b396f621ff947957fd25444bd82b, type: 3}
-  palo: {fileID: 4470947192330042655}
+  paloRend: {fileID: 4470947192330042655}
+  corazon: {fileID: 21300000, guid: b81164482f12af340bffbf25b9d9eb22, type: 3}
+  espada: {fileID: 21300000, guid: 8a41b21179900044b91399e4dda19e4a, type: 3}
+  escudo: {fileID: 21300000, guid: c8c9b396f621ff947957fd25444bd82b, type: 3}
 --- !u!114 &2300083104967006775
 MonoBehaviour:
   m_ObjectHideFlags: 0

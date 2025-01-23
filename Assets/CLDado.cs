@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ public class Dado
     public Transform transform;
     public Vector2 posicionInicial;
     public int puntuacion;
-    public PaloValor palo;
+    public Palo palo;
 
     public override bool Equals(object obj)
     {
@@ -15,65 +16,19 @@ public class Dado
                EqualityComparer<Transform>.Default.Equals(transform, dado.transform) &&
                posicionInicial.Equals(dado.posicionInicial) &&
                puntuacion == dado.puntuacion &&
-               EqualityComparer<PaloValor>.Default.Equals(palo, dado.palo);
+               palo == dado.palo;
     }
 
     public override int GetHashCode()
     {
-        return System.HashCode.Combine(transform, posicionInicial, puntuacion, palo);
+        return HashCode.Combine(transform, posicionInicial, puntuacion, palo);
     }
 }
 
 //PALO: El palo del dado
-public class Palo
+public enum Palo
 {
-    public static PaloValor espada = new Espada();
-    public static PaloValor corazon = new Corazon();
-    public static PaloValor escudo = new Escudo();
-
-    private static readonly PaloValor[] acciones = {
-        espada,
-        corazon,
-        escudo
-    };
-
-    public static PaloValor RandomValue() 
-    {
-        int num =  Random.Range(0, acciones.Length);
-        return acciones[num];
-    }
+    espada,
+    corazon,
+    escudo
 }
-
-public abstract class PaloValor
-{
-    public abstract int Index { get; }
-    public abstract void Ejecutar(CLPersonaje personaje, int cantidad);
-}
-
-public class Espada : PaloValor
-{
-    public override int Index => 0;
-    public override void Ejecutar(CLPersonaje personaje, int cantidad)
-    {
-
-    }
-}
-
-public class Corazon : PaloValor
-{
-    public override int Index => 1;
-    public override void Ejecutar(CLPersonaje personaje, int cantidad)
-    {
-
-    }
-}
-
-public class Escudo : PaloValor
-{
-    public override int Index => 2;
-    public override void Ejecutar(CLPersonaje personaje, int cantidad)
-    {
-
-    }
-}
-

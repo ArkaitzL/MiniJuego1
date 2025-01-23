@@ -5,15 +5,29 @@ using UnityEngine;
 public class Controlador : MonoBehaviour
 {
 
-    [SerializeField] private Generador generadorSP = new Generador();
-    [SerializeField] private Tablero tableroSP = new Tablero();
-    [SerializeField] private Buscar buscar = new Buscar();
+    [SerializeField] public Generador generadorSP = new Generador();
+    [SerializeField] public Tablero tableroSP = new Tablero();
+    [SerializeField] public Buscar buscarSP = new Buscar();
+    [SerializeField] public Turno turnoSP = new Turno();
 
     private Dictionary<float, Dictionary<float, Dado>> tablero;
 
     private ObservableHashSet<Dado> dadosL = new ObservableHashSet<Dado>();
     private ObservableHashSet<Dado> dadosR = new ObservableHashSet<Dado>();
     private Usado usando = null;
+
+    public static Controlador instancia;
+
+    private void Awake()
+    {
+        // Crea una instancia publica y unica paar que sea accesible desde cualquier lado
+        if (instancia != null) {
+            Debug.LogWarning($"Multiples instancias de controlador, puedes eliminar la de {gameObject.name}");
+            return;
+        }
+
+        instancia = this;
+    }
 
     private void Start()
     {
@@ -24,6 +38,9 @@ public class Controlador : MonoBehaviour
         // Genera el escenario
         Generar();
         Tablero();
+
+        // Inicia el juego
+        turnoSP.Iniciar();
     }
 
     // Genera los cajones
@@ -70,10 +87,11 @@ public class Controlador : MonoBehaviour
         arrastrar.Iniciado = true;
     }
 
-    // Jugar Turno
-    public async void Turno() 
+    // Jugar Turno al darle al BOTON PLAY
+    public async void PasarTurno() 
     {
         if (usando == null) return;
+        if (!turnoSP.Personaje.Local) return;
 
         // Cambiarlo de lista
         usando.lista.Remove(usando.dado);
@@ -81,9 +99,8 @@ public class Controlador : MonoBehaviour
         tablero[p.x][p.y] = usando.dado;
 
         // Buscar sumas
-        buscar.Inicializar(tablero);
-        List<Dado> dados = buscar.ComprobarSuma(new Vector2(p.x, p.y));
-        Debug.Log("DADOS: " + dados.Count);
+        buscarSP.Inicializar(tablero);
+        List<Dado> dados = buscarSP.ComprobarSuma(new Vector2(p.x, p.y));
 
         if (dados.Count > 0)
         {
@@ -95,7 +112,7 @@ public class Controlador : MonoBehaviour
                 // ANIMAR .......
 
                 // Accion
-                //d.palo.Ejecutar( , d.puntuacion);
+                turnoSP.Personaje.Accion(d);
             }
         }
 
@@ -114,7 +131,7 @@ public class Controlador : MonoBehaviour
         usando.arrastrar.Arrastrable = false;
 
         // Pasar turno
-        // ...
+        turnoSP.Pasar();
 
         usando = null;
     }
