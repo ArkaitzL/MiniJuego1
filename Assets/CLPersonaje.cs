@@ -11,6 +11,7 @@ using TMPro;
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI vidaTxt;
     [SerializeField] private TextMeshProUGUI escudoTxt;
+    [SerializeField] private TextMeshProUGUI vidaMaxTxt;
 
     private int vida, escudo;
 
@@ -25,6 +26,7 @@ using TMPro;
 
         vidaTxt.text = vida.ToString();
         escudoTxt.text = "0";
+        vidaMaxTxt.text = $"/{vidaInicial}";
     }
 
     public void ActivarIA() 
