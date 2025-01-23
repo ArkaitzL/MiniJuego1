@@ -1540,7 +1540,7 @@ MonoBehaviour:
     generacionEspera: 0.5
     dado2D: {fileID: 4028126683929696135, guid: d75626f892fbc8a448797da57f03c1ab, type: 3}
   buscarSP:
-    sumar: 10
+    sumar: 12
   turnoSP:
     personajes:
     - local: 1
