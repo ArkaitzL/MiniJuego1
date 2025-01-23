@@ -87,13 +87,16 @@ public class Controlador : MonoBehaviour
 
         if (dados.Count > 0)
         {
-            // ATACAR.CS
+            foreach (Dado d in dados)
+            {
+                // Quitar dado del tablero
+                tablero[d.transform.position.x][d.transform.position.y] = null;
+                Destroy(d.transform.gameObject);
+                // ANIMAR .......
 
-            // Quitar dado del tablero
-            // ...
-
-            // Atacar
-            // ...
+                // Accion
+                //d.palo.Ejecutar( , d.puntuacion);
+            }
         }
 
         // Crear nuevo dado en la lista

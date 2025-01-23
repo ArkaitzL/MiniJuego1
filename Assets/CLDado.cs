@@ -47,13 +47,13 @@ public class Palo
 public abstract class PaloValor
 {
     public abstract int Index { get; }
-    public abstract void Ejecutar(CLPersonaje personaje);
+    public abstract void Ejecutar(CLPersonaje personaje, int cantidad);
 }
 
 public class Espada : PaloValor
 {
     public override int Index => 0;
-    public override void Ejecutar(CLPersonaje personaje)
+    public override void Ejecutar(CLPersonaje personaje, int cantidad)
     {
 
     }
@@ -62,7 +62,7 @@ public class Espada : PaloValor
 public class Corazon : PaloValor
 {
     public override int Index => 1;
-    public override void Ejecutar(CLPersonaje personaje)
+    public override void Ejecutar(CLPersonaje personaje, int cantidad)
     {
 
     }
@@ -71,7 +71,7 @@ public class Corazon : PaloValor
 public class Escudo : PaloValor
 {
     public override int Index => 2;
-    public override void Ejecutar(CLPersonaje personaje)
+    public override void Ejecutar(CLPersonaje personaje, int cantidad)
     {
 
     }

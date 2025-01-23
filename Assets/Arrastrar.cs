@@ -14,6 +14,7 @@ public class Arrastrar : MonoBehaviour
     private bool isDragging;
     private Vector3 offset, posicionInicial;
     private Camera camara;
+    private Animator animator;
 
 
     public bool Arrastrable { get => arrastrable; set => arrastrable = value; }
@@ -23,6 +24,7 @@ public class Arrastrar : MonoBehaviour
     private void Start()
     {
         camara = Camera.main;
+        animator = GetComponent<Animator>();
     }
 
     private void OnMouseUp()
@@ -38,6 +40,7 @@ public class Arrastrar : MonoBehaviour
         {
             // Si está en una posición válida, animar hacia el destino
             AnimMover(hitCollider.transform.position);
+            animator.SetBool("Moviendo", false);
 
             // Avisa de que ya está movido
             Callback?.Invoke();
@@ -46,6 +49,7 @@ public class Arrastrar : MonoBehaviour
 
         // Si no está en una posición válida, regresar a la posición inicial con animación
         PosicionInicial();
+        animator.SetBool("Moviendo", false);
     }
 
     private void OnMouseDown()
@@ -58,6 +62,8 @@ public class Arrastrar : MonoBehaviour
 
         // Calcula el offset entre el objeto y el cursor
         offset = transform.position - Mover();
+
+        animator.SetBool("Moviendo", true);
     }
 
     private void OnMouseDrag()
