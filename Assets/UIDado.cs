@@ -17,19 +17,10 @@ public class UIDado : MonoBehaviour
 
     public void Pintar(Dado dado) 
     {
-        // Palo
-        switch (dado.palo)
-        {
-            case Palo.espada:
-                paloRend.sprite = espada;
-                break;
-            case Palo.corazon:
-                paloRend.sprite = corazon;
-                break;
-            case Palo.escudo:
-                paloRend.sprite = escudo;
-                break;
-        }
+
+        dado.AccionPalo(Palo.espada, () => { paloRend.sprite = espada; });
+        dado.AccionPalo(Palo.corazon, () => { paloRend.sprite = corazon; });
+        dado.AccionPalo(Palo.escudo, () => { paloRend.sprite = escudo; });
 
         // Cantidad
         foreach (int v in valores[dado.puntuacion-1])  {

@@ -14,6 +14,11 @@ using Random = UnityEngine.Random;
         // Inicia los turnos
         turno = Random.Range(0, personajes.Length);
         Accion();
+
+        foreach (CLPersonaje personaje in personajes)
+        {
+            personaje.Iniciar();
+        }
     }
 
     public void Pasar() 
@@ -24,7 +29,6 @@ using Random = UnityEngine.Random;
 
     private void Accion() 
     {
-        Debug.Log(turno);
         // Si es el turno del jugador local 
         if (personajes[turno].Local)
         {
@@ -37,6 +41,6 @@ using Random = UnityEngine.Random;
         }
     }
 
-    public CLPersonaje ProximoJugador => personajes[(turno + 1) % personajes.Length];
+    public CLPersonaje OtroJugador() => personajes[(turno + 1) % personajes.Length];
 
 }

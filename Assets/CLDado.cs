@@ -10,6 +10,14 @@ public class Dado
     public int puntuacion;
     public Palo palo;
 
+    public bool AccionPalo(Palo palo, Action accion) 
+    {
+        if (this.palo != palo) return false;
+
+        accion?.Invoke();
+        return false;
+    }
+
     public override bool Equals(object obj)
     {
         return obj is Dado dado &&
