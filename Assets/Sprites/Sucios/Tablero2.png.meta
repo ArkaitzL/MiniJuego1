@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 05b77595a68f302438418bd8c537785a
+guid: bd4a51bfdd9a49949841a9deda887176
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3558938666459727012
-    second: Marco-Rojo_0
+      213: -4206496258063515589
+    second: Tablero2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Marco-Rojo_0
+      name: Tablero2_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 21
-        width: 118
-        height: 81
+        x: 3
+        y: 3
+        width: 242
+        height: 242
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c5bf340932c1c9ec0800000000000000
-      internalID: -3558938666459727012
+      spriteID: b304d15b0f58f95c0800000000000000
+      internalID: -4206496258063515589
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Marco-Rojo_0: -3558938666459727012
+      Tablero2_0: -4206496258063515589
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

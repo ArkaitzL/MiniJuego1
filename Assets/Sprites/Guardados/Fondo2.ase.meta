@@ -124,7 +124,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Fondo2
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.50078493, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -132,7 +132,7 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 640
+      width: 637
       height: 360
     spriteID: 5935030263c062740aa2aab4f2805b52
     spriteBone: []
@@ -156,9 +156,9 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 0
+        x: 1
         y: 0
-        width: 640
+        width: 637
         height: 360
       spriteId: 5935030263c062740aa2aab4f2805b52
     linkedCells: []

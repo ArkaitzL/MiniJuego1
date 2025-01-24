@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 05b77595a68f302438418bd8c537785a
+guid: 50dae42b0d4321246b1a0d319d69b102
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3558938666459727012
-    second: Marco-Rojo_0
+      213: 4485371810838751399
+    second: Carta2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 130
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Marco-Rojo_0
+      name: Carta2_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 21
-        width: 118
-        height: 81
+        x: 2
+        y: 1
+        width: 88
+        height: 124
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c5bf340932c1c9ec0800000000000000
-      internalID: -3558938666459727012
+      spriteID: 7a8289eb5ed3f3e30800000000000000
+      internalID: 4485371810838751399
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Marco-Rojo_0: -3558938666459727012
+      Carta2_0: 4485371810838751399
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 05b77595a68f302438418bd8c537785a
+guid: 4537d58e7d9568f40bb3f03c089930c2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3558938666459727012
-    second: Marco-Rojo_0
+      213: -2433751755662205217
+    second: Boton_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Marco-Rojo_0
+      name: Boton_0
       rect:
         serializedVersion: 2
-        x: 5
-        y: 21
-        width: 118
-        height: 81
+        x: 10
+        y: 40
+        width: 108
+        height: 54
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c5bf340932c1c9ec0800000000000000
-      internalID: -3558938666459727012
+      spriteID: fde554c3ca3993ed0800000000000000
+      internalID: -2433751755662205217
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Marco-Rojo_0: -3558938666459727012
+      Boton_0: -2433751755662205217
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
