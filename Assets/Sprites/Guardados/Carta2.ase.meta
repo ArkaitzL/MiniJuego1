@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 26163c1ddc6ce9e45965b3c2a930c390
+guid: 43edb1d46b31e7b49807c09ae8a8a87a
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -122,9 +122,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Dado
+  - name: Carta2
     originalName: 
-    pivot: {x: 0.5, y: -0.094339624}
+    pivot: {x: 0.48837212, y: -0.016393442}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -132,9 +132,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 52
-      height: 53
-    spriteID: a25ce6ff4adb53b48af6fb5121d2db28
+      width: 86
+      height: 122
+    spriteID: 019b5c119c3591f44b0ee645f903b00d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -142,25 +142,25 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 3, y: 4}
+    uvTransform: {x: 4, y: 4}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -874125140
-    name: Dado
+    guid: -1677900173
+    name: Carta2
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Dado
+    - name: Carta2
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 5
-        y: 5
-        width: 53
-        height: 53
-      spriteId: a25ce6ff4adb53b48af6fb5121d2db28
+        x: 3
+        y: 2
+        width: 86
+        height: 122
+      spriteId: 019b5c119c3591f44b0ee645f903b00d
     linkedCells: []
     parentIndex: -1
   platformSettings:
@@ -179,4 +179,4 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 64, y: 64}
+  canvasSize: {x: 90, y: 128}
