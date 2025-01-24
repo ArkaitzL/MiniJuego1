@@ -83,11 +83,11 @@ public class Arrastrar : MonoBehaviour
         return mousePos;
     }
 
-    public void PosicionInicial() {
-        AnimMover(posicionInicial);
+    public async void PosicionInicial() {
+        await  AnimMover(posicionInicial);
     }
 
-    private async void AnimMover(Vector3 destino)
+    public async Task AnimMover(Vector3 destino)
     {
         float tiempoTranscurrido = 0;
         Vector3 posicionInicial = transform.position;
@@ -101,7 +101,7 @@ public class Arrastrar : MonoBehaviour
             float curvaT = movimientoCurve.Evaluate(t);
             transform.position = Vector3.Lerp(posicionInicial, destino, curvaT);
 
-            await Task.Yield(); 
+            await Task.Yield();
         }
 
         // Asegurarse de que termina en la posición exacta

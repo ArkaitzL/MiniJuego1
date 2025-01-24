@@ -57,7 +57,9 @@ public class ObservableHashSet<T>
         hashSet.Clear();
     }
 
+
     public int Count => hashSet.Count;
     public bool Contains(T item) => hashSet.Contains(item);
+    public List<T> ToList() => new List<T>(hashSet);
     public HashSet<T>.Enumerator GetEnumerator() => hashSet.GetEnumerator();
 }

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 [Serializable] public class Generador
 {
-    [SerializeField] private Vector2 dadosPosicion = new Vector2(-6, 0);
     [SerializeField] private int dadosCantidad = 3;
     [SerializeField] private float dadosGap = 0.5f;
     [SerializeField] private float generacionEspera= 0.5f;
@@ -15,7 +14,7 @@ using System.Threading.Tasks;
 
     const int NUM_MAX_DADO = 6;
 
-    public async Task<HashSet<Dado>> IniciarDados(int lado)
+    public async Task<HashSet<Dado>> IniciarDados(Vector2 posicion, bool local, int lado)
     {
         // Validar que el prefab exista
         if (dado2D == null) {
@@ -24,8 +23,8 @@ using System.Threading.Tasks;
         }
 
         // Crear el padre y posición inicial
-        GameObject padre = new GameObject($"Jugador [{lado}]");
-        Vector2 posicionInicial = dadosPosicion * (lado);
+        GameObject padre = new GameObject($"Jugador");
+        Vector2 posicionInicial = posicion;
 
         // Almacenar los dados generados
         HashSet<Dado> dadosSet = new HashSet<Dado>();
@@ -39,8 +38,7 @@ using System.Threading.Tasks;
             );
 
             // Crear el dado asincrónicamente
-            bool jugador = lado == 1;
-            Dado nuevoDado = await CrearDado(posicionDado, $"Dado-{i}", padre.transform, jugador);
+            Dado nuevoDado = await CrearDado(posicionDado, $"Dado-{i}", padre.transform, local);
 
             // Añadir el dado al conjunto
             dadosSet.Add(nuevoDado);

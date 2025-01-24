@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class IA
 {
-    public void Nivel1() 
+    public void Nivel1(CLPersonaje personaje) 
     {
         Debug.Log("IA...");
 
         // Busca si alguna opcion suma puntos
-        (Vector2? pos, Dado dado) dataSuma = BuscarSuma();
+        (Vector2? pos, Dado dado) dataSuma = BuscarSuma(personaje);
         if (dataSuma.pos != null)
         {
             Colocar((Vector2)dataSuma.pos, dataSuma.dado);
@@ -16,16 +16,19 @@ public class IA
         }
 
         // Pone uno al azar
-        (Vector2 pos, Dado dado) dataRandom = BuscarRandom();
+        (Vector2 pos, Dado dado) dataRandom = BuscarRandom(personaje);
         Colocar(dataRandom.pos, dataRandom.dado);
     }
 
-    private void Colocar(Vector2 p, Dado dado) 
+    private async void Colocar(Vector2 p, Dado dado) 
     {
         Controlador.instancia.Tablero[p.x][p.y] = dado;
+        await dado.transform.GetComponent<Arrastrar>().AnimMover(new Vector3(p.x, p.y, 0));
+
+        Controlador.instancia.turnoSP.Pasar(dado);
     }
 
-    private (Vector2 pos, Dado dado) BuscarRandom()
+    private (Vector2 pos, Dado dado) BuscarRandom(CLPersonaje personaje)
     {
         // Busca si alguna opción suma puntos
         Dictionary<float, Dictionary<float, Dado>> tablero = Controlador.instancia.Tablero;
@@ -39,9 +42,9 @@ public class IA
             foreach (var entryY in entryX.Value)
             {
                 float y = entryY.Key;
-                Dado dado = entryY.Value;
+                Dado dadoNull = entryY.Value;
 
-                if (dado == null)
+                if (dadoNull == null)
                 {
                     dadosNulos.Add(new Vector2(x, y));
                 }
@@ -57,16 +60,17 @@ public class IA
             posicion = dadosNulos[randomIndex];
         }
 
-        if (true)
-        {
+        // Seleccion un dado aleatorio del jugador
+        int random = Random.Range(0, personaje.Dados.Count);
 
-        }
+        List<Dado> listaDados = personaje.Dados.ToList();
+        Dado dado = listaDados[random];
 
         // Si no hay nulos, retorna un valor por defecto
-        return (posicion, new Dado());
+        return (posicion, dado);
     }
 
-    private (Vector2? pos, Dado dado) BuscarSuma() 
+    private (Vector2? pos, Dado dado) BuscarSuma(CLPersonaje personaje) 
     {
         // Busca si alguna opcion suma puntos
         // ...

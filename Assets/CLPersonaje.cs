@@ -5,20 +5,27 @@ using TMPro;
 [Serializable] public class CLPersonaje
 {
     [Header("Info")]
+    [SerializeField] private Vector2 posicion;
+    [SerializeField] private int lado;
     [SerializeField] private bool local;
     [SerializeField] private bool ia;
+    [Header("Estadisticas")]
     [SerializeField] private int vidaInicial;
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI vidaTxt;
     [SerializeField] private TextMeshProUGUI escudoTxt;
     [SerializeField] private TextMeshProUGUI vidaMaxTxt;
 
+    private ObservableHashSet<Dado> dados = new ObservableHashSet<Dado>();
     private int vida, escudo;
 
     private IA iaSP = new IA();
 
+    public ObservableHashSet<Dado> Dados { get => dados; set => dados = value; }
+    public Vector2 Posicion { get => posicion; set => posicion = value; }
     public bool Local { get => local; set => local = value; }
     public bool Ia { get => ia; set => ia = value; }
+    public int Lado { get => lado; set => lado = value; }
 
     public void Iniciar()
     {
@@ -31,9 +38,8 @@ using TMPro;
 
     public void ActivarIA() 
     {
-        // AQUI LA iA HACE SU MAGIA
-        iaSP.Nivel1();
-        Controlador.instancia.turnoSP.Pasar();
+        // Cosas de IA y tal
+        iaSP.Nivel1(this);
     }
 
     public void Accion(Dado dado) 

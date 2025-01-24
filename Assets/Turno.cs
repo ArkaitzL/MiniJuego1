@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
     [SerializeField] private CLPersonaje[] personajes;
     int turno;
 
+    public CLPersonaje[] Personajes { get => personajes; }
     public CLPersonaje Personaje { get => personajes[turno]; }
 
     public void Iniciar()
@@ -14,15 +15,12 @@ using Random = UnityEngine.Random;
         // Inicia los turnos
         turno = Random.Range(0, personajes.Length);
         Accion();
-
-        foreach (CLPersonaje personaje in personajes)
-        {
-            personaje.Iniciar();
-        }
     }
 
-    public void Pasar() 
+    public async void Pasar(Dado dado) 
     {
+        await Controlador.instancia.Sumar(dado);
+
         turno = (turno + 1) % personajes.Length;
         Accion();
     }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -12,8 +13,6 @@ public class Controlador : MonoBehaviour
 
     private Dictionary<float, Dictionary<float, Dado>> tablero;
 
-    private ObservableHashSet<Dado> dadosL = new ObservableHashSet<Dado>();
-    private ObservableHashSet<Dado> dadosR = new ObservableHashSet<Dado>();
     private Usado usando = null;
 
     public static Controlador instancia;
@@ -33,32 +32,45 @@ public class Controlador : MonoBehaviour
 
     private void Start()
     {
-        // Detectar nuevo elemento en la lista
-        dadosL.OnElementAdded += OnAdd;
-        dadosR.OnElementAdded += OnAdd;
-
         // Genera el escenario
         Generar();
         TableroG();
 
-        // Inicia el juego
-        turnoSP.Iniciar();
+        // Iniciar los personaje
+        foreach (CLPersonaje personaje in turnoSP.Personajes)
+        {
+            personaje.Iniciar();
+        }
     }
 
     // Genera los cajones
-    private async void Generar() 
+    private async void Generar()
     {
         // Cajones
-        var tareas = new[] {
-            generadorSP.IniciarDados(1),
-            generadorSP.IniciarDados(-1)
-        };
+        List<(CLPersonaje personaje, Task<HashSet<Dado>> tarea)> tareas = new List<(CLPersonaje, Task<HashSet<Dado>>)>();
 
-        var resultados = await Task.WhenAll(tareas);
+        foreach (CLPersonaje personaje in turnoSP.Personajes)
+        {
+            // Generar posiciones
+            var resultado = generadorSP.IniciarDados(personaje.Posicion, personaje.Local, personaje.Lado);
+            tareas.Add((personaje, resultado));
+
+            // Detectar nuevo elemento en la lista
+            personaje.Dados.OnElementAdded += OnAdd;
+        }
+
+        // Esperar a que todas las tareas se completen
+        await Task.WhenAll(tareas.Select(t => t.tarea));
 
         // Asignar los resultados a los HashSet correspondientes
-        dadosL.New(resultados[0]);
-        dadosR.New(resultados[1]);
+        foreach (var (personaje, tarea) in tareas)
+        {
+            var dados = await tarea; // Obtener el resultado de la tarea
+            personaje.Dados.New(dados); // Asignar al HashSet del personaje
+        }
+
+        // Inicia el juego
+        turnoSP.Iniciar();
     }
 
     // Generar el tablero
@@ -90,15 +102,32 @@ public class Controlador : MonoBehaviour
     }
 
     // Jugar Turno al darle al BOTON PLAY
-    public async void PasarTurno() 
+    public void PasarTurno() 
     {
         if (usando == null) return;
         if (!turnoSP.Personaje.Local) return;
 
-        // Cambiarlo de lista
+        // Pasar de turno
+        turnoSP.Pasar(usando.dado);
+
+        // Quitarlo de la lista
         usando.lista.Remove(usando.dado);
-        Vector3 p = usando.dado.transform.position;
-        tablero[p.x][p.y] = usando.dado;
+
+        // Fijarlo al tablero
+        usando.arrastrar.Arrastrable = false;
+
+        usando = null;
+    }
+
+    // Comprueba si se puede sumar y pasa
+    public async Task Sumar(Dado dado)
+    {
+        // Quitarlo de la lista
+        turnoSP.Personaje.Dados.Remove(dado);
+
+        // Cambiarlo de lista
+        Vector3 p = dado.transform.position;
+        tablero[p.x][p.y] = dado;
 
         // Buscar sumas
         buscarSP.Inicializar(tablero);
@@ -111,6 +140,7 @@ public class Controlador : MonoBehaviour
                 // Quitar dado del tablero
                 tablero[d.transform.position.x][d.transform.position.y] = null;
                 Destroy(d.transform.gameObject);
+
                 // ANIMAR .......
 
                 // Accion
@@ -119,23 +149,15 @@ public class Controlador : MonoBehaviour
         }
 
         // Crear nuevo dado en la lista
-        Transform dadoTR = usando.dado.transform;
-        bool arrastrable = usando.arrastrar.Arrastrable;
-        Dado dado = await generadorSP.CrearDado(
-            usando.dado.posicionInicial,
+        Transform dadoTR = dado.transform;
+        bool arrastrable = turnoSP.Personaje.Local;
+        Dado nuevoDado = await generadorSP.CrearDado(
+            dado.posicionInicial,
             dadoTR.name,
             dadoTR.parent,
             arrastrable
-         );
-        usando.lista.Add(dado);
-
-        // Fijarlo al tablero
-        usando.arrastrar.Arrastrable = false;
-
-        // Pasar turno
-        turnoSP.Pasar();
-
-        usando = null;
+        );
+        turnoSP.Personaje.Dados.Add(nuevoDado);
     }
 
     public class Usado {
